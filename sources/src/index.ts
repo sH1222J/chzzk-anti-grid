@@ -14,13 +14,12 @@ Win.String.prototype.toLowerCase = new Proxy(Win.String.prototype.toLowerCase, {
   }
 })
 
-Win.Function.prototype.call = new Proxy(Win.Function.prototype.call, {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  apply(Target: typeof Function.prototype.call, ThisArg: Function, Args: unknown[]) {
-    if (Args.toString() === 'includes' && Args.every((Arg) => typeof Arg === 'string')
-      && ['Direct3D', '(WDDM)', 'Microsoft Basic Render Driver'].some((Str) => Str.includes(Args[1]))) {
-      return false
+Win.WebGLRenderingContext.prototype.getParameter = new Proxy(Win.WebGLRenderingContext.prototype.getParameter, {
+  apply(Target: typeof WebGLRenderingContext.prototype.getParameter, ThisArg: unknown, Args: unknown[]) {
+    const Result = Reflect.apply(Target, ThisArg, Args)
+    if (new Error().stack.includes('main.')) {
+      return ''
     }
-    return Reflect.apply(Target, ThisArg, Args)
+    return Result
   }
 })
