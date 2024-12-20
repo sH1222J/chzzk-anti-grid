@@ -8,7 +8,7 @@
 // @downloadURL  https://cdn.jsdelivr.net/npm/@list-kr/chzzk-anti-grid@latest/dist/chzzk-anti-grid.user.js
 // @license      MIT
 //
-// @version      1.0.0
+// @version      1.0.1
 // @author       PiQuark6046 and contributors
 //
 // @match        https://chzzk.naver.com/*

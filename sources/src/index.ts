@@ -18,7 +18,7 @@ Win.Function.prototype.call = new Proxy(Win.Function.prototype.call, {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   apply(Target: typeof Function.prototype.call, ThisArg: Function, Args: unknown[]) {
     if (Args.toString() === 'includes' && Args.every((Arg) => typeof Arg === 'string')
-      && ['Direct3D', '(WDDM)', 'Microsoft Basic Render Driver'].some((Str) => Args[1].includes(Str))) {
+      && ['Direct3D', '(WDDM)', 'Microsoft Basic Render Driver'].some((Str) => Str.includes(Args[1]))) {
       return false
     }
     return Reflect.apply(Target, ThisArg, Args)
