@@ -4,22 +4,11 @@ declare const unsafeWindow: unsafeWindow
 
 const Win = typeof unsafeWindow !== 'undefined' ? unsafeWindow : window
 
-Win.String.prototype.toLowerCase = new Proxy(Win.String.prototype.toLowerCase, {
-  apply(Target: typeof String.prototype.toLowerCase, ThisArg: string, Args) {
-    const Result = Reflect.apply(Target, ThisArg, Args)
-    if (Result === 'windows') {
-      return ''
+Win.Object.defineProperty = new Proxy(Win.Object.defineProperty, {
+  apply(Target: typeof Win.Object.defineProperty, ThisArg: null, Args: [unknown, string | symbol, PropertyDescriptor]) {
+    if (typeof Args[1] === 'string' && Args[1] === 'isSupportedPlatform') {
+      return Reflect.apply(Target, ThisArg, [Args[0], Args[1], { value: () => false, writable: false, enumerable: true, configurable: true }])
     }
-    return Result
-  }
-})
-
-Win.WebGLRenderingContext.prototype.getParameter = new Proxy(Win.WebGLRenderingContext.prototype.getParameter, {
-  apply(Target: typeof WebGLRenderingContext.prototype.getParameter, ThisArg: unknown, Args: unknown[]) {
-    const Result = Reflect.apply(Target, ThisArg, Args)
-    if (new Error().stack.includes('main.')) {
-      return ''
-    }
-    return Result
+    return Reflect.apply(Target, ThisArg, Args)
   }
 })
